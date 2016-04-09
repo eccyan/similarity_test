@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+gem 'pry'
+gem 'pry-byebug'
+gem 'tf-idf-similarity'
+gem 'okura'
+gem 'oga'
+gem 'wikicloth'
+gem 'sanitize'
+gem 'ruby-progressbar'
+gem 'parallel'

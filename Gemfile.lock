@@ -1,0 +1,69 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ansi (1.5.0)
+    ast (2.2.0)
+    builder (3.2.2)
+    byebug (8.2.4)
+    coderay (1.1.1)
+    crass (1.0.2)
+    expression_parser (0.9.0)
+    htmlentities (4.3.4)
+    method_source (0.8.2)
+    mini_portile2 (2.0.0)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
+    nokogumbo (1.4.7)
+      nokogiri
+    oga (2.2)
+      ast
+      ruby-ll (~> 2.1)
+    okura (0.0.1)
+    parallel (1.8.0)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
+      pry (~> 0.10)
+    ruby-ll (2.1.2)
+      ansi
+      ast
+    ruby-progressbar (1.7.5)
+    sanitize (4.0.1)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.4.4)
+      nokogumbo (~> 1.4.1)
+    slop (3.6.0)
+    tf-idf-similarity (0.1.5)
+      unicode_utils (~> 1.4)
+    twitter-text (1.13.4)
+      unf (~> 0.1.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
+    unicode_utils (1.4.0)
+    wikicloth (0.8.3)
+      builder
+      expression_parser
+      htmlentities
+      nokogiri
+      twitter-text
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  oga
+  okura
+  parallel
+  pry
+  pry-byebug
+  ruby-progressbar
+  sanitize
+  tf-idf-similarity
+  wikicloth
+
+BUNDLED WITH
+   1.11.2
