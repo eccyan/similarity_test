@@ -33,6 +33,8 @@ names = documents.values.map(&:id).zip(documents.keys).to_h
 similarities = documents.values.combination(2).map do |comb|
   { documents: [names.fetch(comb.first.id), names.fetch(comb.last.id)],
     similarity: model.similarity_matrix[*comb.map { |document| model.document_index document }] }
+end.sort_by do |hash|
+  -hash.fetch(:similarity)
 end
 
 jj tfidfs: tfidfs, similarities: similarities
