@@ -6,11 +6,11 @@ require 'wikicloth'
 require 'sanitize'
 require 'parallel'
 
-exit if ARGV.empty?
+exit if ARGF.nil?
 
 documents_root = Pathname('documents')
 
-wikitexts = ARGV.map do |filename|
+wikitexts = ARGF.read.lines.map(&:strip).map do |filename|
   text = File.open(documents_root.join filename).read
   [filename, text]
 end.to_h

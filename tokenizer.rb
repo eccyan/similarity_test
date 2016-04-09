@@ -1,17 +1,28 @@
 require 'bundler/setup' 
 require 'pry'
+require 'json'
 require 'ruby-progressbar'
 require 'okura/serializer'
 require 'parallel'
 
-exit if ARGV.empty?
+exit if ARGF.nil?
+
+def dev_null
+  orig_stdout = $stdout.dup # does a dup2() internally
+  $stdout.reopen('/dev/null', 'w')
+  yield
+ensure
+  $stdout.reopen(orig_stdout)
+end
 
 dictionary_root = Pathname('dictionaries')
-tagger = Okura::Serializer::FormatInfo.create_tagger dictionary_root.join('uni')
+
+tagger = dev_null do
+  Okura::Serializer::FormatInfo.create_tagger dictionary_root.join('uni')
+end
 
 tmp_root = Pathname('tmp')
-file = File.open tmp_root.join(ARGV.first)
-lines = file.readlines.reject { |x| x.strip == '' }
+texts = JSON.load ARGF.read
 
 module Okura
   class Tagger
@@ -36,8 +47,14 @@ module Okura
   end
 end
 
-nodes = tagger.parse lines[0..5000].join("\n")
+file_nodes = texts.map do |filename, text|
+  nodes = tagger.parse text.lines.map(&:strip).reject(&:empty?).join("\n")
+  [filename, nodes]
+end.to_h
 
-noun_words = nodes.mincost_path.to_a.map(&:word).select { |word| word.left.text.split(',').first == '名詞' }
+file_nouns = file_nodes.map do |filename, nodes|
+  nouns = nodes.mincost_path.to_a.map(&:word).select { |word| word.left.text.split(',').first == '名詞' }
+  [filename, nouns.map(&:surface)]
+end.to_h
 
-puts noun_words.map(&:surface)
+jj file_nouns

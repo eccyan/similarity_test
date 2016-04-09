@@ -1,17 +1,19 @@
 require 'bundler/setup' 
 require 'pry'
+require 'json'
 require 'matrix'
 require 'tf-idf-similarity' 
 
-exit if ARGV.empty?
+exit if ARGF.nil?
 
 documents_root = Pathname('documents')
 tmp_root = Pathname('tmp')
 
-documents = ARGV.map do |name|
-  tokens = File.open(tmp_root.join("#{name}_tokens")).readlines.map(&:chomp)
-  document = TfIdfSimilarity::Document.new File.open(tmp_root.join(name)).read, tokens: tokens
-  [name, document]
+file_tokens = JSON.load ARGF.read
+
+documents = file_tokens.map do |filename, tokens|
+  document = TfIdfSimilarity::Document.new File.open(documents_root.join(filename)).read, tokens: tokens
+  [filename, document]
 end.to_h
 
 model = TfIdfSimilarity::TfIdfModel.new(documents.values)
@@ -38,5 +40,3 @@ documents.values.combination(2).each.with_object(documents.values.map(&:id).zip(
   puts "      - #{names[comb.last.id]}"
   puts "    value: #{similarity}"
 end
-
-
