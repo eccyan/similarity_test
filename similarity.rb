@@ -18,7 +18,7 @@ model = TfIdfSimilarity::TfIdfModel.new(documents.values)
 
 # Print the tf*idf values for terms in a document
 documents.each do |name, document|
-  puts "name: #{name}"
+  puts "#{name}:"
   document.terms.map do |term|
     [term, model.tfidf(document, term)]
   end.sort_by do |pair|
@@ -29,12 +29,12 @@ documents.each do |name, document|
 end
 
 # Find the similarity of two documents in the matrix
-documents.values.combination(2).each.with_object(documents.values.map(&:id).zip(documents.keys)) do |comb, pair|
+documents.values.combination(2).each.with_object(documents.values.map(&:id).zip(documents.keys).to_h) do |comb, names|
   similarity = model.similarity_matrix[*comb.map { |document| model.document_index document }]
   puts 'similarity:'
   puts "  documents:"
-  puts "    - #{pair.first}"
-  puts "    - #{pair.last}"
+  puts "    - #{names[comb.first.id]}"
+  puts "    - #{names[comb.last.id]}"
   puts "  value: #{similarity}"
 end
 
