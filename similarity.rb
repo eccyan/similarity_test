@@ -3,7 +3,7 @@ require 'pry'
 require 'matrix'
 require 'tf-idf-similarity' 
 
-return if ARGV.empty?
+exit if ARGV.empty?
 
 documents_root = Pathname('documents')
 tmp_root = Pathname('tmp')

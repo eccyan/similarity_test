@@ -4,7 +4,7 @@ require 'ruby-progressbar'
 require 'okura/serializer'
 require 'parallel'
 
-return if ARGV.empty?
+exit if ARGV.empty?
 
 dictionary_root = Pathname('dictionaries')
 tagger = Okura::Serializer::FormatInfo.create_tagger dictionary_root.join('uni')
