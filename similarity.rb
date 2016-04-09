@@ -10,14 +10,15 @@ tmp_root = Pathname('tmp')
 
 documents = ARGV.map do |name|
   tokens = File.open(tmp_root.join("#{name}_tokens")).readlines.map(&:chomp)
-  TfIdfSimilarity::Document.new File.open(tmp_root.join(name)).read, tokens: tokens
-end
+  document = TfIdfSimilarity::Document.new File.open(tmp_root.join(name)).read, tokens: tokens
+  [name, document]
+end.to_h
 
-model = TfIdfSimilarity::TfIdfModel.new(documents)
+model = TfIdfSimilarity::TfIdfModel.new(documents.values)
 
 # Print the tf*idf values for terms in a document
-documents.each.with_index do |document, index|
-  puts "document#{index}:"
+documents.each do |name, document|
+  puts "name: #{name}"
   document.terms.map do |term|
     [term, model.tfidf(document, term)]
   end.sort_by do |pair|
@@ -28,7 +29,13 @@ documents.each.with_index do |document, index|
 end
 
 # Find the similarity of two documents in the matrix
-matrix = model.similarity_matrix
-similarity = matrix[*documents.map { |document| model.document_index document }]
+documents.values.combination(2).each.with_object(documents.values.map(&:id).zip(documents.keys)) do |comb, pair|
+  similarity = model.similarity_matrix[*comb.map { |document| model.document_index document }]
+  puts 'similarity:'
+  puts "  documents:"
+  puts "    - #{pair.first}"
+  puts "    - #{pair.last}"
+  puts "  value: #{similarity}"
+end
 
-puts "similarity: #{similarity}"
+
