@@ -29,13 +29,14 @@ documents.each do |name, document|
 end
 
 # Find the similarity of two documents in the matrix
+puts 'similarities:'
 documents.values.combination(2).each.with_object(documents.values.map(&:id).zip(documents.keys).to_h) do |comb, names|
   similarity = model.similarity_matrix[*comb.map { |document| model.document_index document }]
-  puts 'similarity:'
-  puts "  documents:"
-  puts "    - #{names[comb.first.id]}"
-  puts "    - #{names[comb.last.id]}"
-  puts "  value: #{similarity}"
+  puts "  -"
+  puts "    documents:"
+  puts "      - #{names[comb.first.id]}"
+  puts "      - #{names[comb.last.id]}"
+  puts "    value: #{similarity}"
 end
 
 
