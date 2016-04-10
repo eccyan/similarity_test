@@ -5,8 +5,6 @@ require 'ruby-progressbar'
 require 'okura/serializer'
 require 'parallel'
 
-exit if ARGF.nil?
-
 def dev_null
   orig_stdout = $stdout.dup # does a dup2() internally
   $stdout.reopen('/dev/null', 'w')

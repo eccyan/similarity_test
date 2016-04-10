@@ -6,8 +6,6 @@ require 'wikicloth'
 require 'sanitize'
 require 'parallel'
 
-exit if ARGF.nil?
-
 documents_root = Pathname('documents')
 
 wikitexts = ARGF.read.lines.map(&:strip).map do |filename|

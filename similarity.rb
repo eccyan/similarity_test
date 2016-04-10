@@ -4,8 +4,6 @@ require 'json'
 require 'matrix'
 require 'tf-idf-similarity' 
 
-exit if ARGF.nil?
-
 documents_root = Pathname('documents')
 tmp_root = Pathname('tmp')
 
