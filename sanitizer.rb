@@ -6,6 +6,8 @@ require 'wikicloth'
 require 'sanitize'
 require 'parallel'
 
+require './buffer'
+
 documents_root = Pathname('documents')
 
 wikitexts = ARGF.read.lines.map(&:strip).map do |filename|
@@ -15,7 +17,10 @@ end.to_h
 
 texts = Parallel.map(wikitexts.to_a.each_slice(1000), in_processes: 4) do |chunk|
   chunk.map do |pair|
-    [pair.first, Sanitize.fragment(WikiCloth::Parser.new(data: pair.last).to_html)] rescue nil
+    html = WikiCloth::Parser.new(data: pair.last).to_html
+    dev_null $stderr do
+      [pair.first, Sanitize.fragment(html)] rescue nil
+    end
   end.compact
 end.first.to_h
 
